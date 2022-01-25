@@ -87,24 +87,20 @@
     display: inline-block;
     clip-path: polygon(25% 0%, 100% 0, 100% 50%, 75% 100%, 0 100%, 0% 50%);
     background: white;
-    border: 0;
     color: #111;
     opacity: 0.8;
+    font-family: 'Overpass', sans-serif;
+    font-weight: bold;
+    border-top-color: orange;
+    border-right-color: orange;
+    border-bottom-color: orange;
+    border-left-color: orange;
+    border-bottom-width: 3px;
 }
 
     .button-custom-1:hover {
-        z-index: 3;
-        position: absolute;
-        top: 500px;
-        left: 425px;
-        width: 150px;
-        height: 50px;
-        display: inline-block;
-        clip-path: polygon(25% 0%, 100% 0, 100% 50%, 75% 100%, 0 100%, 0% 50%);
         background: #252525;
-        border: #252525;
         color: white;
-        opacity: 0.8;
     }
 
 
