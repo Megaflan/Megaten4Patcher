@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-image: url("../img/background.png");
 }
 
 a, .btn-link {
@@ -30,6 +31,52 @@ a, .btn-link {
     color: red;
 }
 
+.layout-white {
+    background-color: #FFFFFF80;
+    z-index: 2;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 300px;
+}
+
+.layout-black {
+    background-color: #00000080;
+    z-index: 2;
+    position: absolute;
+    top: 300px;
+    width: 100%;
+    height: 300px;
+}
+
+.logoSMTIV {
+    position: absolute;
+    z-index: 3;
+    top: 190px;
+    left: 150px;
+    width: 75%;
+    animation: invertirlogo 30s infinite;
+}
+
+.animation-white-bg {
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    width: 120%;
+    height: 300px;
+    animation: animation-white 40s infinite;
+}
+
+.animation-black-bg {
+    z-index: 1;
+    position: absolute;
+    top: 300px;
+    width: 120%;
+    height: 300px;
+    animation: animation-black 40s 10s infinite;
+}
+
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -42,9 +89,75 @@ a, .btn-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+@keyframes invertirlogo {
+    0% {
+        filter: invert(0);
     }
+
+    50% {
+        filter: invert(1);
+    }
+
+    100% {
+        filter: invert(0);
+    }
+}
+
+@keyframes animation-white {
+    0% {
+        opacity:0;
+        background-image: url(../img/flynn_bg.png);
+    }
+
+    25% {
+        opacity: 1;
+        background-image: url(../img/flynn_bg.png);
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 1;
+        background-image: url(../img/jonathan_bg.png);
+    }
+
+    100% {
+        opacity: 0;
+        background-image: url(../img/jonathan_bg.png);
+    }
+}
+
+@keyframes animation-black {
+    0% {
+        opacity: 0;
+        background-image: url(../img/walter_bg.png);
+    }
+
+    25% {
+        opacity: 1;
+        background-image: url(../img/walter_bg.png);
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 1;
+        background-image: url(../img/isabeau_bg.png);
+    }
+
+    100% {
+        opacity: 0;
+        background-image: url(../img/isabeau_bg.png);
+    }
+}

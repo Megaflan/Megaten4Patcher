@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ElectronNET.API;
+using ElectronNET.API.Entities;
 
 namespace Megaten4Patcher
 {
@@ -64,7 +65,14 @@ namespace Megaten4Patcher
         }
         private async void CreateWindow()
         {
-            var window = await Electron.WindowManager.CreateWindowAsync();
+            var window = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
+            {
+                Width = 1024,
+                Height = 600,
+                MinWidth = 1024,
+                MinHeight = 600,
+                Icon = "/icon.ico"
+            });
             window.OnClosed += () => {
                 Electron.App.Quit();
             };

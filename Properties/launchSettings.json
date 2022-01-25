@@ -27,7 +27,8 @@
     "Electron.NET": {
       "commandName": "Executable",
       "executablePath": "electronize",
-      "commandLineArgs": "start"
+      "commandLineArgs": "start",
+      "workingDirectory": "."
     }
   }
 }
