@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
+using Megaten4Patcher.Shared;
 
 namespace Megaten4Patcher
 {
@@ -31,6 +32,7 @@ namespace Megaten4Patcher
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<BlazorTransitionableRoute.IRouteTransitionInvoker, RouteTransitionInvoker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,9 +70,9 @@ namespace Megaten4Patcher
             var window = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
                 Width = 1024,
-                Height = 600,
+                Height = 652,
                 MinWidth = 1024,
-                MinHeight = 600,
+                MinHeight = 652,
                 Icon = "/icon.ico"
             });
             window.OnClosed += () => {
