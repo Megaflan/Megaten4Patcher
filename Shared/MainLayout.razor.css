@@ -2,6 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    background-image: url("img/background.png");
 }
 
 .main {
@@ -30,6 +31,167 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+.layout-white {
+    background-color: #FFFFFF80;
+    z-index: 2;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 300px;
+}
+
+.layout-black {
+    background-color: #00000080;
+    z-index: 2;
+    position: absolute;
+    top: 300px;
+    width: 100%;
+    height: 300px;
+}
+
+.logoSMTIV {
+    position: absolute;
+    z-index: 3;
+    top: 190px;
+    left: 150px;
+    width: 75%;
+    animation: invertirlogo 30s infinite;
+}
+
+.animation-white-bg {
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 300px;
+    animation: animation-white 40s infinite;
+}
+
+.animation-black-bg {
+    z-index: 1;
+    position: absolute;
+    top: 300px;
+    width: 100%;
+    height: 300px;
+    animation: animation-black 40s 10s infinite;
+}
+
+.button-custom-1 {
+    z-index: 3;
+    position: absolute;
+    top: 500px;
+    left: 425px;
+    width: 150px;
+    height: 50px;
+    display: inline-block;
+    clip-path: polygon(25% 0%, 100% 0, 100% 50%, 75% 100%, 0 100%, 0% 50%);
+    background: white;
+    border: 0;
+    color: #111;
+    opacity: 0.8;
+}
+
+    .button-custom-1:hover {
+        z-index: 3;
+        position: absolute;
+        top: 500px;
+        left: 425px;
+        width: 150px;
+        height: 50px;
+        display: inline-block;
+        clip-path: polygon(25% 0%, 100% 0, 100% 50%, 75% 100%, 0 100%, 0% 50%);
+        background: #252525;
+        border: #252525;
+        color: white;
+        opacity: 0.8;
+    }
+
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+@keyframes invertirlogo {
+    0% {
+        filter: invert(0);
+    }
+
+    50% {
+        filter: invert(1);
+    }
+
+    100% {
+        filter: invert(0);
+    }
+}
+
+@keyframes animation-white {
+    0% {
+        opacity: 0;
+        background-image: url("img/flynn_bg.png");
+    }
+
+    25% {
+        opacity: 1;
+        background-image: url("img/flynn_bg.png");
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 1;
+        background-image: url("img/jonathan_bg.png");
+    }
+
+    100% {
+        opacity: 0;
+        background-image: url("img/jonathan_bg.png");
+    }
+}
+
+@keyframes animation-black {
+    0% {
+        opacity: 0;
+        background-image: url("img/walter_bg.png");
+    }
+
+    25% {
+        opacity: 1;
+        background-image: url("img/walter_bg.png");
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 1;
+        background-image: url("img/isabeau_bg.png");
+    }
+
+    100% {
+        opacity: 0;
+        background-image: url("img/isabeau_bg.png");
+    }
+}
 
 @media (max-width: 640.98px) {
     .top-row:not(.auth) {
