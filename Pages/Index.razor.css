@@ -103,7 +103,6 @@
         color: white;
     }
 
-
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -188,6 +187,8 @@
         background-image: url("img/isabeau_bg.png");
     }
 }
+
+
 
 @media (max-width: 640.98px) {
     .top-row:not(.auth) {
