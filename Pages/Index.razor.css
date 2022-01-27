@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background-image: url("img/background.png");
+    background-color: white;
 }
 
 .main {

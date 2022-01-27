@@ -11,14 +11,14 @@
             transitionOut.classList.remove('transition-out');
             transitionOut.classList.add(
                 "animate__fadeOut" + direction,
-                "animate__faster",
+                "animate__slower",
                 "animate__animated"
             );
 
             transitionIn.classList.remove('transition-in');
             transitionIn.classList.add(
                 "animate__fadeIn" + direction,
-                "animate__faster",
+                "animate__slower",
                 "animate__animated"
             );
         }

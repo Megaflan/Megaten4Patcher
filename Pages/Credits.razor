@@ -1,14 +1,16 @@
-﻿@page "/credits"
+﻿@inject Services.BlazorTimer Timer
+@inject NavigationManager NavManager
+@page "/credits"
 
 <div class="card text-left">
     <div class="card-body">
         <h5 class="card-title">Créditos</h5>
         <p class="card-text"><b>Romhackers: </b>Megaflan, Fan Translations Int.</p>
         <p class="card-text"><b>Traductores: </b>Seta, Aleix, Hadouken, krix, Megaflan, Ryuusuke, Gross y Óscar73</p>
-        <p class="card-text"><b>Correctores: </b>Shiryu, RodMerida, Spike, Valcat, Megaflan y Leeg</p>
+        <p class="card-text"><b>Correctores: </b>Shiryu, RodMerida, Spike, Valcat, Harucchi, Megaflan y Leeg</p>
         <p class="card-text"><b>Editores gráficos: </b>Darkmet98, Megaflan y GriffithVIII</p>
         <p class="card-text"><b>Betatesters: </b>Megaflan, Leeg y Ryuusuke</p>
-        <p class="card-text"><b>Editores de vídeo: </b>Roxa Amakura (Cinemáticas ingame) y SynthGaen (Trailer)</p>
+        <p class="card-text"><b>Editores de vídeo: </b>Roxa Amakura (Cinemáticas ingame) y SynthGaen (Tráiler)</p>
         <p class="card-text"><b>Agradecimientos: </b>Fan Translations Int. (Por toda la ayuda ofrecida desde el inicio del proyecto)</p>
     </div>
     <div class="round-time-bar" data-style="smooth" style="--duration: 10;">
@@ -23,10 +25,22 @@
 
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    private void StartTimer()
     {
-        currentCount++;
+        Timer.SetTimer(10000);
+        Timer.OnElapsed += TimerElapsedHandler;
+    }
+
+    private void TimerElapsedHandler()
+    {
+        NavManager.NavigateTo("patcher");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            StartTimer();
+        }
     }
 }

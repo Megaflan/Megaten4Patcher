@@ -31,6 +31,7 @@ namespace Megaten4Patcher
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<BlazorTransitionableRoute.IRouteTransitionInvoker, RouteTransitionInvoker>();
+            services.AddTransient<Services.BlazorTimer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
