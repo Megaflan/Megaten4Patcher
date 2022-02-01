@@ -1,4 +1,8 @@
-﻿.page {
+﻿.body {
+    overflow: hidden;
+}
+
+.page {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -37,6 +41,16 @@
     width: 100%;
     height: 600px;
     background-image: url("img/background_patcher.png");
+}
+
+.animation-cloud {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 600px;
+    background-image: url("img/cloud.png");
+    transform: translateY(150px);
+    animation: moverse 40s infinite;
 }
 
 .button-custom-1 {
@@ -127,73 +141,19 @@
         top: 0.5rem;
     }
 
-@keyframes invertirlogo {
+@keyframes moverse {
     0% {
-        filter: invert(0);
+        left: 0px;
     }
 
     50% {
-        filter: invert(1);
+        left: 400px;
     }
 
     100% {
-        filter: invert(0);
+        left: 0px;
     }
 }
-
-@keyframes animation-white {
-    0% {
-        opacity: 0;
-        background-image: url("img/flynn_bg.png");
-    }
-
-    25% {
-        opacity: 1;
-        background-image: url("img/flynn_bg.png");
-    }
-
-    50% {
-        opacity: 0;
-    }
-
-    75% {
-        opacity: 1;
-        background-image: url("img/jonathan_bg.png");
-    }
-
-    100% {
-        opacity: 0;
-        background-image: url("img/jonathan_bg.png");
-    }
-}
-
-@keyframes animation-black {
-    0% {
-        opacity: 0;
-        background-image: url("img/walter_bg.png");
-    }
-
-    25% {
-        opacity: 1;
-        background-image: url("img/walter_bg.png");
-    }
-
-    50% {
-        opacity: 0;
-    }
-
-    75% {
-        opacity: 1;
-        background-image: url("img/isabeau_bg.png");
-    }
-
-    100% {
-        opacity: 0;
-        background-image: url("img/isabeau_bg.png");
-    }
-}
-
-
 
 @media (max-width: 640.98px) {
     .top-row:not(.auth) {
