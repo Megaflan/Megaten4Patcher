@@ -126,7 +126,7 @@
     width: 1024px;
     height: 600px;
     background-color: #FFFFFFFF;
-    animation: transition-to-white 3s linear 1;
+    animation: opacity-to-full 3s linear 1;
 }
 
 #blazor-error-ui {
@@ -162,7 +162,7 @@
     }
 }
 
-@keyframes transition-to-white {
+@keyframes opacity-to-full {
     0% {
         opacity: 0;
     }
