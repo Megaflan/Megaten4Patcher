@@ -122,6 +122,13 @@
         color: white;
     }
 
+.transition-1 {
+    width: 1024px;
+    height: 600px;
+    background-color: #FFFFFFFF;
+    animation: transition-to-white 3s linear 1;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -152,6 +159,16 @@
 
     100% {
         left: 0px;
+    }
+}
+
+@keyframes transition-to-white {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }
 

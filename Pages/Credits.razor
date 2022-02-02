@@ -1,6 +1,4 @@
-﻿@inject Services.BlazorTimer Timer
-@inject NavigationManager NavManager
-@page "/credits"
+﻿@page "/credits"
 
 <div class="card text-left">
     <div class="card-body">
@@ -13,9 +11,6 @@
         <p class="card-text"><b>Editores de vídeo: </b>Roxa Amakura (Cinemáticas ingame) y SynthGaen (Tráiler)</p>
         <p class="card-text"><b>Agradecimientos: </b>Fan Translations Int. (Por toda la ayuda ofrecida desde el inicio del proyecto)</p>
     </div>
-    <div class="round-time-bar" data-style="smooth" style="--duration: 10;">
-        <div></div>
-    </div>
     <div class="card-footer text-muted">
         TraduSquare 2017-2022
     </div>
@@ -25,22 +20,4 @@
 
 
 @code {
-    private void StartTimer()
-    {
-        Timer.SetTimer(10000);
-        Timer.OnElapsed += TimerElapsedHandler;
-    }
-
-    private void TimerElapsedHandler()
-    {
-        NavManager.NavigateTo("patcher");
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            StartTimer();
-        }
-    }
 }

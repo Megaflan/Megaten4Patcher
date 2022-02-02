@@ -1,12 +1,31 @@
 ﻿@page "/"
-
-<div class="layout-white"></div>
-<div class="animation-white-bg"></div>
-<div class="logoSMTIV">
-    <img src="../img/SMT_IV_LOGO_CASTELLANO.png" width="100%">
+@inject Services.BlazorTimer Timer
+@inject NavigationManager NavManager
+<div class="main @transitionClass">    
+    <div class="layout-white"></div>
+    <div class="animation-white-bg"></div>
+    <div class="logoSMTIV">
+        <img src="../img/SMT_IV_LOGO_CASTELLANO.png" width="100%">
+    </div>
+    <div class="layout-black"></div>
+    <div class="animation-black-bg"></div>
+    <button type="button" class="button-custom-1" @onclick="@(e => StartTimer())">Instalar</button>
 </div>
-<div class="layout-black"></div>
-<div class="animation-black-bg"></div>
-<NavLink class="nav-link" href="patcher">
-    <button type="button" class="button-custom-1">Instalar</button>
-</NavLink>
+
+@functions {
+    string transitionClass { get; set; }
+}
+
+@code {
+    private void StartTimer()
+    {
+        Timer.SetTimer(3000);
+        transitionClass = "transition-1";
+        Timer.OnElapsed += TimerElapsedHandler;
+    }
+
+    private void TimerElapsedHandler()
+    {        NavManager.NavigateTo("patcher");
+
+    }
+}

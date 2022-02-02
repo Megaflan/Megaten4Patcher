@@ -3,18 +3,6 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Pages\Index.razor.css" />
-    <None Remove="Pages\Patcher.razor.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Pages\Patcher.razor.css" />
-    <Content Include="Pages\Index.razor.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\JsInteropForAnimatedTransitions.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="BlazorTransitionableRoute" Version="3.1.0" />
     <PackageReference Include="ElectronNET.API" Version="13.5.1" />
   </ItemGroup>
   <ItemGroup>

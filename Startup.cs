@@ -30,7 +30,6 @@ namespace Megaten4Patcher
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddScoped<BlazorTransitionableRoute.IRouteTransitionInvoker, RouteTransitionInvoker>();
             services.AddTransient<Services.BlazorTimer>();
         }
 

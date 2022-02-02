@@ -1,19 +1,5 @@
-﻿@inherits TransitionableLayoutComponent
+﻿@inherits LayoutComponentBase
 
-<div class="transition @transitioningClass">
+<div class="page">
     @Body
 </div>
-
-
-@if (!Transition.FirstRender)
-{
-    <style>
-        .transition-in {
-            opacity: 0;
-        }
-    </style>
-}
-
-@code {
-    private string transitioningClass => Transition.IntoView ? "transition-in" : "transition-out";
-}
