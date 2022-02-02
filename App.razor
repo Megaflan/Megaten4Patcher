@@ -2,10 +2,10 @@
     <Found Context="routeData">
         <LayoutView Layout="@typeof(MainLayout)">
             <TransitionableRoutePrimary RouteData="@routeData" ForgetStateOnTransition="true">
-                <TransitionableRouteView DefaultLayout="@typeof(MyViewLayout)" />
+                <TransitionableRouteView DefaultLayout="@typeof(IndexLayout)" />
             </TransitionableRoutePrimary>
             <TransitionableRouteSecondary RouteData="@routeData" ForgetStateOnTransition="true">
-                <TransitionableRouteView DefaultLayout="@typeof(MyViewLayout)" />
+                <TransitionableRouteView DefaultLayout="@typeof(PatcherLayout)" />
             </TransitionableRouteSecondary>
         </LayoutView>
     </Found>
