@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject Services.BlazorTimer Timer
 @inject NavigationManager NavManager
+
 <div class="main @transitionClass">    
     <div class="layout-white"></div>
     <div class="animation-white-bg"></div>
@@ -23,9 +24,10 @@
         transitionClass = "transition-1";
         Timer.OnElapsed += TimerElapsedHandler;
     }
+    
 
     private void TimerElapsedHandler()
-    {        NavManager.NavigateTo("patcher");
-
+    {        
+        NavManager.NavigateTo("patcher");
     }
 }

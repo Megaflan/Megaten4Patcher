@@ -1,24 +1,80 @@
 ﻿@page "/dlcpatch"
+@inject IJSRuntime JS
 @layout PatcherLayout
 
 <div class="card text-left estilo">
     <div class="card-body">
-        <h5 class="card-title">Créditos</h5>
-        <p class="card-text"><b>Romhackers: </b>Megaflan, Neobeo</p>
-        <p class="card-text"><b>Traductores: </b>Seta, Aleix, Hadouken, krix, Megaflan, Ryuusuke, Gross y Óscar73</p>
-        <p class="card-text"><b>Correctores: </b>Shiryu, RodMerida, Spike, Valcat, Harucchi, Megaflan y Leeg</p>
-        <p class="card-text"><b>Editores gráficos: </b>Darkmet98, Megaflan y GriffithVIII</p>
-        <p class="card-text"><b>Betatesters: </b>Megaflan, Leeg y Ryuusuke</p>
-        <p class="card-text"><b>Editores de vídeo: </b>Roxa Amakura (Cinemáticas ingame) y SynthGaen (Tráiler)</p>
-        <p class="card-text"><b>Agradecimientos: </b>Fan Translations Int. (Por toda la ayuda ofrecida desde el inicio del proyecto)</p>
+        <h2 class="m-0 text-center">Parchea tu contenido adicional</h2>
+        <div class="row d-flex justify-content-center">
+            <p class="col-md-9">Para saber cómo conseguir un dump legítimo del contenido adicional, lee el siguiente tutorial: <a href="https://not-d3fau4.tk/como-dumpear-nsp/" target="_blank">Tutorial para extraer el contenido adicional [CIA]</a></p>      
+        </div>
+        <form name="eligeCarpeta" class="px-5">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12">
+                    <label>Selecciona el dump de tu contenido adicional</label><br />
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Pon aquí el dump en formato .CIA" value=@fileSelected>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-secondary input-group-text" @onclick="ObtenerArchivo">Examinar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-secondary btn-block" id="patch" style="text-align: center; margin-top: 3vh;" @onclick="AplicarParche">Aplicar parche</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="card-footer text-muted">
         TraduSquare 2017-2022
     </div>
 </div>
 
-
-
+@functions {
+    string fileSelected { get; set; }
+    bool ListenerEnabled { get; set; }
+    static Main patchProcess;
+}
 
 @code {
+    private async Task ObtenerArchivo()
+    {
+        await JS.InvokeAsync<string>("SearchFolder");
+        if (!ListenerEnabled)
+        {            
+            Electron.IpcMain.On("selectFolder", async (args) => {
+            var mainWindow = Electron.WindowManager.BrowserWindows.Last();
+            var options = new ElectronNET.API.Entities.OpenDialogOptions
+            {
+                Properties = new ElectronNET.API.Entities.OpenDialogProperty[] {
+                    ElectronNET.API.Entities.OpenDialogProperty.openFile
+                }
+            };
+            
+            string[] files = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
+            if (files.Length != 0)
+                fileSelected = files[0];
+            });
+            ListenerEnabled = true;
+        }
+    }
+
+    private void AplicarParche()
+    {
+        try
+        {
+            patchProcess = new Main(fileSelected, fileSelected, "PLACEHOLDER", PatchMode.General);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Se ha producido un error extrayendo los archivos.\n{e.Message}\n{e.StackTrace}");
+        }
+    }
 }

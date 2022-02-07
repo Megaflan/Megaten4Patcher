@@ -27,5 +27,11 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <script>
+        const { ipcRenderer } = require("electron");
+        function SearchFolder() {
+            ipcRenderer.send("selectFolder");
+        }
+    </script>
 </body>
 </html>

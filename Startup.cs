@@ -71,6 +71,7 @@ namespace Megaten4Patcher
                 Height = 652,
                 MinWidth = 1024,
                 MinHeight = 652,
+                Maximizable = false,
                 Icon = "/icon.ico"
             });
             window.OnClosed += () => {
