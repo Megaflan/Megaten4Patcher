@@ -13,7 +13,7 @@
                 <div class="col-md-12">
                     <label>Selecciona el dump de tu contenido adicional</label><br />
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Pon aquí el dump en formato .CIA" value="@fileSelected"/>
+                        <input class="form-control" type="text" id="ruta" placeholder="Pon aquí el dump en formato .CIA" value="@fileSelected"/>
                         <div class="input-group-append">
                             <button type="button" class="btn btn-secondary input-group-text" @onclick="ObtenerArchivo">Examinar</button>
                         </div>
@@ -49,7 +49,7 @@
         JS.InvokeAsync<string>("SearchFolder");
         if (!ListenerEnabled)
         {            
-            Electron.IpcMain.On("selectFolder", async (args) => {
+            Electron.IpcMain.On("select-folder", async (args) => {
                 var mainWindow = Electron.WindowManager.BrowserWindows.Last();
                 var options = new ElectronNET.API.Entities.OpenDialogOptions
                 {
@@ -72,6 +72,7 @@
                     fileSelected = files[0];
                     Console.WriteLine("Variable fileSelected tras async: " + fileSelected);
                     Console.WriteLine("Variable files[0] tras async: " + files[0]);
+                    Electron.IpcMain.Send(mainWindow, "select-folder-reply", fileSelected);
                 }                
             });
             ListenerEnabled = true;
@@ -82,8 +83,7 @@
     {
         try
         {
-            fileSelected = this.fileSelected;
-            //patchProcess = new Main(fileSelected, fileSelected, "PLACEHOLDER", PatchMode.General);
+            patchProcess = new Main(fileSelected, fileSelected, "PLACEHOLDER", PatchMode.General);
         }
         catch (Exception e)
         {

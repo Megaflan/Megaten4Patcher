@@ -1,4 +1,5 @@
 ﻿@page "/gamepatch"
+@inject IJSRuntime JS
 @layout PatcherLayout
 
 <div class="card text-left estilo">
@@ -20,9 +21,9 @@
                 <div class="col-md-12">
                     <label>Selecciona el dump de tu copia original</label>
                     <div class="input-group">
-                        <input class="form-control" name="juego" type="text" placeholder=".cia o .3ds" id="gamePath" disabled="disabled">
+                        <input class="form-control" type="text" id="ruta" placeholder="Pon aquí el dump en formato .CIA o .3DS" value="@fileSelected"/>
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-secondary input-group-text" id="searchGame">Examinar</button>
+                            <button type="button" class="btn btn-secondary input-group-text" @onclick="ObtenerArchivo">Examinar</button>
                         </div>
                     </div>
                 </div>
@@ -40,3 +41,58 @@
         TraduSquare 2017-2022
     </div>
 </div>
+
+@functions {
+    string fileSelected { get; set; }
+    bool ListenerEnabled { get; set; }
+    static Main patchProcess;
+}
+
+@code {
+    private async Task ObtenerArchivo()
+    {
+        JS.InvokeAsync<string>("SearchFolder");
+        if (!ListenerEnabled)
+        {            
+            Electron.IpcMain.On("select-folder", async (args) => {
+                var mainWindow = Electron.WindowManager.BrowserWindows.Last();
+                var options = new ElectronNET.API.Entities.OpenDialogOptions
+                {
+                    Properties = new ElectronNET.API.Entities.OpenDialogProperty[] {
+                        ElectronNET.API.Entities.OpenDialogProperty.openFile
+                    },
+                    Filters = new ElectronNET.API.Entities.FileFilter[]
+                    {
+                        new ElectronNET.API.Entities.FileFilter
+                        {
+                            Name = "Citrus Installable Archive",
+                            Extensions = new string[] {"cia"},
+                        }
+                    }
+                };
+
+                string[] files = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
+                if (files.Length > 0)
+                {
+                    fileSelected = files[0];
+                    Console.WriteLine("Variable fileSelected tras async: " + fileSelected);
+                    Console.WriteLine("Variable files[0] tras async: " + files[0]);
+                    Electron.IpcMain.Send(mainWindow, "select-folder-reply", fileSelected);
+                }                
+            });
+            ListenerEnabled = true;
+        }
+    }
+
+    private void AplicarParche()
+    {
+        try
+        {
+            patchProcess = new Main(fileSelected, fileSelected, "PLACEHOLDER", PatchMode.General);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Se ha producido un error extrayendo los archivos.\n{e.Message}\n{e.StackTrace}");
+        }
+    }
+}
