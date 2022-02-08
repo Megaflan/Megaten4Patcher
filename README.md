@@ -1,7 +1,7 @@
 # Megaten4Patcher
 _Aplicador de parches de traducción basado en el uso de Electron, Blazor y WebAssembly._
 
-## Tecnologías 🛠️
+## Tecnologías destacadas 🛠️
 
 * [WebAssembly](https://webassembly.org/)
 * [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) - Frontend
