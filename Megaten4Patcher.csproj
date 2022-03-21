@@ -3,11 +3,77 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Data\DLC\chunk_1.xdelta" />
+    <None Remove="Data\DLC\chunk_10.xdelta" />
+    <None Remove="Data\DLC\chunk_11.xdelta" />
+    <None Remove="Data\DLC\chunk_12.xdelta" />
+    <None Remove="Data\DLC\chunk_13.xdelta" />
+    <None Remove="Data\DLC\chunk_14.xdelta" />
+    <None Remove="Data\DLC\chunk_2.xdelta" />
+    <None Remove="Data\DLC\chunk_3.xdelta" />
+    <None Remove="Data\DLC\chunk_4.xdelta" />
+    <None Remove="Data\DLC\chunk_5.xdelta" />
+    <None Remove="Data\DLC\chunk_6.xdelta" />
+    <None Remove="Data\DLC\chunk_7.xdelta" />
+    <None Remove="Data\DLC\chunk_8.xdelta" />
+    <None Remove="Data\DLC\chunk_9.xdelta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\DLC\chunk_1.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_10.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_11.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_12.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_13.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_14.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_2.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_3.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_4.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_5.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_6.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_7.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_8.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DLC\chunk_9.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Blazored.Modal" Version="6.0.1" />
     <PackageReference Include="ElectronNET.API" Version="13.5.1" />
+    <PackageReference Include="PleOps.XdeltaSharp" Version="1.3.0" />
+    <PackageReference Include="Yarhl" Version="4.0.0-preview.153" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mara.Lib">
       <HintPath>..\Mara-new-3ds\Mara.Lib\bin\Debug\net6.0\Mara.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="SceneGate.Lemon">
+      <HintPath>..\Lemon-develop\src\Lemon\bin\Debug\net6.0\SceneGate.Lemon.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

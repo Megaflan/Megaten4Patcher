@@ -1,4 +1,6 @@
 ﻿@page "/dlcpatch"
+@using System.IO
+@using Megaten4Patcher.Services
 @inject IJSRuntime JS
 @layout PatcherLayout
 
@@ -40,10 +42,11 @@
 @functions {
     string fileSelected { get; set; }
     bool ListenerEnabled { get; set; }
-    static Main patchProcess;
 }
 
 @code {
+    [CascadingParameter] public IModalService Modal { get; set; }
+
     private async Task ObtenerArchivo()
     {
         JS.InvokeAsync<string>("SearchFolder");
@@ -60,7 +63,7 @@
                     {
                         new ElectronNET.API.Entities.FileFilter
                         {
-                            Name = "Citrus Installable Archive",
+                            Name = "CTR Installable Archive",
                             Extensions = new string[] {"cia"},
                         }
                     }
@@ -70,8 +73,8 @@
                 if (files.Length > 0)
                 {
                     fileSelected = files[0];
-                    Console.WriteLine("Variable fileSelected tras async: " + fileSelected);
-                    Console.WriteLine("Variable files[0] tras async: " + files[0]);
+                    //Console.WriteLine("Variable fileSelected tras async: " + fileSelected);
+                    //Console.WriteLine("Variable files[0] tras async: " + files[0]);
                     Electron.IpcMain.Send(mainWindow, "select-folder-reply", fileSelected);
                 }                
             });
@@ -83,7 +86,18 @@
     {
         try
         {
-            patchProcess = new Main(fileSelected, fileSelected, "PLACEHOLDER", PatchMode.General);
+            var path = Directory.GetParent(fileSelected).FullName;
+            var targetPath = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_DLC_esp.cia";
+            var options = new ModalOptions() {
+                DisableBackgroundCancel = true,
+                HideCloseButton = true,
+            };
+            var patchingModal = Modal.Show<ModalNormal>("Parcheando...", options);
+            Searcher.Patch(fileSelected);
+            patchingModal.Close();
+            var parameters = new ModalParameters();
+            parameters.Add(nameof(ModalExito.Path), targetPath);
+            Modal.Show<ModalExito>($"¡Parche generado con éxito!", parameters, new ModalOptions());
         }
         catch (Exception e)
         {

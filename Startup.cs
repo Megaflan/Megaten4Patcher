@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Megaten4Patcher.Shared;
+using Blazored.Modal;
 
 namespace Megaten4Patcher
 {
@@ -31,6 +32,7 @@ namespace Megaten4Patcher
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddTransient<Services.BlazorTimer>();
+            services.AddBlazoredModal();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
