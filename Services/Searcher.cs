@@ -46,6 +46,24 @@ namespace Megaten4Patcher.Services
             cia.TransformWith<NodeContainer2BinaryCia>().Stream.WriteTo($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_DLC_esp.cia");
         }
 
+        public static void PatchGame(string path)
+        {
+            Node cia = NodeFactory.FromFile(path, "root").TransformWith<BinaryCia2NodeContainer>();
+            var content = Navigator.SearchNode(cia, "/root/content/program");
+            content.TransformWith<Binary2Ncch>();
+            var c = content.Children["rom"];
+            var patched = new BinaryFormat();
+            var xdelta = new FileStream($"./Data/RomFS/romfs.xdelta", FileMode.Open);
+            var decoder = new Decoder(c.Stream, xdelta, patched.Stream);
+            decoder.Run();
+
+            c.ChangeFormat(patched);
+
+            content.TransformWith<Ncch2Binary>();
+            
+            cia.TransformWith<NodeContainer2BinaryCia>().Stream.WriteTo($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp.cia");
+        }
+
         public static Dictionary<string, string> GenerateHashMap(string path)
         {
             Dictionary<string, string> hashMap = new Dictionary<string, string>();

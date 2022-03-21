@@ -70,12 +70,21 @@ namespace Megaten4Patcher
             var window = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
                 Width = 1024,
-                Height = 652,
+                Height = 648,
                 MinWidth = 1024,
-                MinHeight = 652,
+                MinHeight = 648,
+                MaxWidth = 1024,
+                MaxHeight = 648,
+                Resizable = false,
                 Maximizable = false,
-                Icon = "/icon.ico"
+                Icon = "./icon.ico"
             });
+            window.SetTitle("Parcheador de Shin Megami Tensei IV");
+            window.OnReadyToShow += () =>
+            {
+                window.Show();
+                window.RemoveMenu();
+            };
             window.OnClosed += () => {
                 Electron.App.Quit();
             };

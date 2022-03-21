@@ -63,7 +63,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Blazored.Modal" Version="6.0.1" />
+    <PackageReference Include="Blazored.Modal" Version="7.0.0-preiew.1" />
     <PackageReference Include="ElectronNET.API" Version="13.5.1" />
     <PackageReference Include="PleOps.XdeltaSharp" Version="1.3.0" />
     <PackageReference Include="Yarhl" Version="4.0.0-preview.153" />
@@ -80,5 +80,13 @@
     <Content Update="electron.manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Data\RomFS\romfs.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

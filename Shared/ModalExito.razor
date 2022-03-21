@@ -7,5 +7,5 @@
 @code {
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
     [Parameter] public string? Path { get; set; }
-    async Task Close() => await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    Task Close() => BlazoredModal.CloseAsync(ModalResult.Ok(true));
 }

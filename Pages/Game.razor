@@ -3,6 +3,8 @@
 @using Megaten4Patcher.Services
 @inject IJSRuntime JS
 @layout PatcherLayout
+@inject Services.BlazorTimer Timer
+
 
 <div class="card text-left estilo">
     <div class="card-body">
@@ -36,7 +38,7 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-12"><button type="button" class="btn btn-secondary btn-block" id="patch" style="text-align: center; margin-top: 3vh;" onclick="DownloadPatch()">Aplicar parche</button></div>
+                        <div class="col-md-12"><button type="button" class="btn btn-secondary btn-block" id="patch" style="text-align: center; margin-top: 3vh;" @onclick="AplicarParche">Aplicar parche</button></div>
                     </div>
                 </div>
             </div>
@@ -48,6 +50,7 @@
 </div>
 
 @functions {
+    IModalReference patchingModal { get; set; }
     string fileSelected { get; set; }
     bool checkJPN { get; set; }
     bool ListenerEnabled { get; set; }
@@ -83,6 +86,8 @@
                 if (files.Length > 0)
                 {
                     fileSelected = files[0];
+                    //Console.WriteLine("Variable fileSelected tras async: " + fileSelected);
+                    //Console.WriteLine("Variable files[0] tras async: " + files[0]);
                     Electron.IpcMain.Send(mainWindow, "select-folder-reply", fileSelected);
                 }                
             });
@@ -90,18 +95,14 @@
         }
     }
 
-    private void AplicarParche()
+    private void Parcheo()
     {
         try
         {
             var path = Directory.GetParent(fileSelected).FullName;
             var targetPath = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp.cia";
-            var options = new ModalOptions() {
-                DisableBackgroundCancel = true,
-                HideCloseButton = true,
-            };
-            var patchingModal = Modal.Show<ModalNormal>("Parcheando...", options);
-            //Searcher.PatchGame(fileSelected);
+                        
+            Searcher.PatchGame(fileSelected);
             patchingModal.Close();
             var parameters = new ModalParameters();
             parameters.Add(nameof(ModalExito.Path), targetPath);
@@ -111,5 +112,16 @@
         {
             Console.WriteLine($"Se ha producido un error extrayendo los archivos.\n{e.Message}\n{e.StackTrace}");
         }
+    }
+
+    private void AplicarParche()
+    {
+        var options = new ModalOptions() {
+                DisableBackgroundCancel = true,
+                HideCloseButton = true,
+            };
+        this.patchingModal = Modal.Show<ModalNormal>("Parcheando...", options);
+        Timer.SetTimer(1000);
+        Timer.OnElapsed += Parcheo;
     }
 }
