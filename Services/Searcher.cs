@@ -14,7 +14,7 @@ namespace Megaten4Patcher.Services
     public class Searcher
     {
         public static Dictionary<string, string> hashMap;
-        public static void Patch(string path)
+        public static void PatchDLC(string path)
         {
             hashMap = GenerateHashMap("./Data/DLC/dlc_data.json");
             Node cia = NodeFactory.FromFile(path, "root").TransformWith<BinaryCia2NodeContainer>();

@@ -15,6 +15,12 @@
                 </li>
             </ul>
         </div>
+        <div class="form-check" style="margin-left: 350px;">
+            <input class="form-check-input" type="checkbox" @bind="checkJPN" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Usar vídeos con audio en japonés
+            </label>
+        </div>
         <form name="eligeCarpeta" class="px-5">
             <div class="row d-flex justify-content-center">
                 <div class="col-md-12">
@@ -43,6 +49,7 @@
 
 @functions {
     string fileSelected { get; set; }
+    bool checkJPN { get; set; }
     bool ListenerEnabled { get; set; }
     static Main patchProcess;
 }
@@ -88,13 +95,13 @@
         try
         {
             var path = Directory.GetParent(fileSelected).FullName;
-            var targetPath = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_DLC_esp.cia";
+            var targetPath = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp.cia";
             var options = new ModalOptions() {
                 DisableBackgroundCancel = true,
                 HideCloseButton = true,
             };
             var patchingModal = Modal.Show<ModalNormal>("Parcheando...", options);
-            Searcher.Patch(fileSelected);
+            //Searcher.PatchGame(fileSelected);
             patchingModal.Close();
             var parameters = new ModalParameters();
             parameters.Add(nameof(ModalExito.Path), targetPath);

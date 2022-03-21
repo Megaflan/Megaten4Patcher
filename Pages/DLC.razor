@@ -93,7 +93,7 @@
                 HideCloseButton = true,
             };
             var patchingModal = Modal.Show<ModalNormal>("Parcheando...", options);
-            Searcher.Patch(fileSelected);
+            Searcher.PatchDLC(fileSelected);
             patchingModal.Close();
             var parameters = new ModalParameters();
             parameters.Add(nameof(ModalExito.Path), targetPath);
