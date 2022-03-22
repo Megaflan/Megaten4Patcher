@@ -1,0 +1,11 @@
+﻿<div>
+    <p>@Error</p>
+
+    <button @onclick="Close" class="btn btn-primary">Cerrar</button>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+    [Parameter] public string? Error { get; set; }
+    Task Close() => BlazoredModal.CloseAsync(ModalResult.Ok(true));
+}

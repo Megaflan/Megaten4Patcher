@@ -82,6 +82,78 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Data\RomFS\Moflex_JPN\chaos_end%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\cut_anim001%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\cut_anim003c%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\cut_anim004%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\cut_anim006%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\cut_anim007%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\cut_anim008%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\cut_anim009A%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\cut_anim010B%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\cut_anim016%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\law_end%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_JPN\neutral_end%283d%29_ES_JPN.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\chaos_end%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\cut_anim001%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\cut_anim003c%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\cut_anim004%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\cut_anim006%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\cut_anim007%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\cut_anim008%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\cut_anim009A%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\cut_anim010B%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\cut_anim016%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\law_end%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RomFS\Moflex_USA\neutral_end%283d%29_ES_ENG.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Data\RomFS\romfs.xdelta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

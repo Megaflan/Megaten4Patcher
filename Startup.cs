@@ -71,9 +71,6 @@ namespace Megaten4Patcher
             {
                 Width = 1024,
                 Height = 648,
-                MinWidth = 1024,
-                MinHeight = 648,
-                MaxWidth = 1024,
                 MaxHeight = 648,
                 Resizable = false,
                 Maximizable = false,
@@ -82,7 +79,6 @@ namespace Megaten4Patcher
             window.SetTitle("Parcheador de Shin Megami Tensei IV");
             window.OnReadyToShow += () =>
             {
-                window.Show();
                 window.RemoveMenu();
             };
             window.OnClosed += () => {

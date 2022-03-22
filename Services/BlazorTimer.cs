@@ -11,7 +11,7 @@ namespace Megaten4Patcher.Services
         {
             _timer = new Timer(interval);
             _timer.Elapsed += NotifyTimerElapsed;
-            _timer.Enabled = true;
+            _timer.Enabled = true;          
         }
 
         public event Action OnElapsed;
@@ -20,6 +20,7 @@ namespace Megaten4Patcher.Services
         {
             OnElapsed?.Invoke();
             _timer.Dispose();
+            return;
         }
     }
 }

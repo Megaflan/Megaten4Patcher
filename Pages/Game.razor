@@ -54,6 +54,7 @@
     string fileSelected { get; set; }
     bool checkJPN { get; set; }
     bool ListenerEnabled { get; set; }
+    bool execution { get; set; }
     static Main patchProcess;
 }
 
@@ -86,8 +87,6 @@
                 if (files.Length > 0)
                 {
                     fileSelected = files[0];
-                    //Console.WriteLine("Variable fileSelected tras async: " + fileSelected);
-                    //Console.WriteLine("Variable files[0] tras async: " + files[0]);
                     Electron.IpcMain.Send(mainWindow, "select-folder-reply", fileSelected);
                 }                
             });
@@ -98,11 +97,11 @@
     private void Parcheo()
     {
         try
-        {
+        {            
             var path = Directory.GetParent(fileSelected).FullName;
             var targetPath = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp.cia";
-                        
-            Searcher.PatchGame(fileSelected);
+
+            Searcher.PatchGame(fileSelected, checkJPN);
             patchingModal.Close();
             var parameters = new ModalParameters();
             parameters.Add(nameof(ModalExito.Path), targetPath);
@@ -110,18 +109,37 @@
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Se ha producido un error extrayendo los archivos.\n{e.Message}\n{e.StackTrace}");
+            var parameters = new ModalParameters();
+            parameters.Add(nameof(ModalFallo.Error), e.Message);
+            this.patchingModal = Modal.Show<ModalFallo>($"Se ha producido un error extrayendo los archivos.", parameters, new ModalOptions());
         }
     }
 
-    private void AplicarParche()
+    async public void AplicarParche()
     {
-        var options = new ModalOptions() {
-                DisableBackgroundCancel = true,
-                HideCloseButton = true,
-            };
-        this.patchingModal = Modal.Show<ModalNormal>("Parcheando...", options);
-        Timer.SetTimer(1000);
-        Timer.OnElapsed += Parcheo;
+        if (fileSelected == null)
+        {
+            this.patchingModal = Modal.Show<ModalNormal>("No se ha seleccionado ningún CIA.");
+        }
+        else
+        {
+            if (execution != true)
+            {
+                execution = true;
+                var options = new ModalOptions()
+                {
+                    DisableBackgroundCancel = true,
+                    HideCloseButton = true,
+                };
+                var parameters = new ModalParameters();
+                parameters.Add(nameof(ModalNormal.Message), "Este proceso puede tardar varios minutos, por favor, espere...");
+                this.patchingModal = Modal.Show<ModalNormal>("Parcheando...", options);
+                var t = Task.Run(async delegate
+                {
+                    await Task.Delay(1000);
+                    Parcheo();
+                });
+            }
+        }        
     }
 }
