@@ -51,18 +51,37 @@ namespace Megaten4Patcher.Services
             try
             {
                 Node cia = NodeFactory.FromFile(path, "root").TransformWith<BinaryCia2NodeContainer>();
+
                 var content = Navigator.SearchNode(cia, "/root/content/program");
                 content.TransformWith<Binary2Ncch>();
-                var c = content.Children["rom"];
+
+                //Patch ExHeader for Decompressed code.bin
+                var exHeader = Navigator.SearchNode(cia, "/root/content/program/extended_header");
+                exHeader.Stream.Position = 0x0D;
+                byte flags = (byte)exHeader.Stream.ReadByte();
+                flags &= 0xFE; // bit0: 1 code.bin is compressed, 0 decompressed
+                exHeader.Stream.Position = 0x0D;
+                exHeader.Stream.WriteByte(flags);
+                
+                //Xdelta to ExeFS
+                var e = content.Children["system"];
+                e.TransformWith<BinaryExeFs2NodeContainer>();
+                var patchedExe = new BinaryFormat();
+                var xdeltaExe = new FileStream("./Data/ExeFS/codeEUR.xdelta", FileMode.Open);
+                var decoderExe = new Decoder(e.Children[".code"].Stream, xdeltaExe, patchedExe.Stream);
+                Console.WriteLine("LOG: Parcheando ExeFS...");
+                decoderExe.Run();
+                e.Children[".code"].ChangeFormat(patchedExe);
+                e.TransformWith<BinaryExeFs2NodeContainer>();
 
                 //Xdelta to RomFS
-                var patched = new BinaryFormat();
-                var xdelta = new FileStream("./Data/RomFS/romfs.xdelta", FileMode.Open);
-                var decoder = new Decoder(c.Stream, xdelta, patched.Stream);
+                var c = content.Children["rom"];
+                var patchedRom = new BinaryFormat();
+                var xdeltaRom = new FileStream("./Data/RomFS/romfs.xdelta", FileMode.Open);
+                var decoderRom = new Decoder(c.Stream, xdeltaRom, patchedRom.Stream);
                 Console.WriteLine("LOG: Parcheando RomFS...");
-                decoder.Run();
-
-                c.ChangeFormat(patched);
+                decoderRom.Run();
+                c.ChangeFormat(patchedRom);
 
                 //Xdelta to Videos
                 c.Stream.Position = 0;
@@ -89,13 +108,13 @@ namespace Megaten4Patcher.Services
                         foreach (var xdeltaFile in Directory.EnumerateFiles("./Data/RomFS/Moflex_JPN"))
                         {
                             var moflex = Navigator.SearchNode(moflexNode, deltaJPNMap[xdeltaFile]);
-                            patched = new BinaryFormat();
-                            xdelta = new FileStream(xdeltaFile, FileMode.Open);
-                            decoder = new Decoder(moflex.Stream, xdelta, patched.Stream);
+                            patchedRom = new BinaryFormat();
+                            xdeltaRom = new FileStream(xdeltaFile, FileMode.Open);
+                            decoderRom = new Decoder(moflex.Stream, xdeltaRom, patchedRom.Stream);
                             Console.WriteLine($"LOG: Parcheando {moflex.Name}");
-                            decoder.Run();
+                            decoderRom.Run();
 
-                            moflex.ChangeFormat(patched);
+                            moflex.ChangeFormat(patchedRom);
                         }
                         break;
                     case false:
@@ -117,13 +136,13 @@ namespace Megaten4Patcher.Services
                         foreach (var xdeltaFile in Directory.EnumerateFiles("./Data/RomFS/Moflex_USA"))
                         {
                             var moflex = Navigator.SearchNode(moflexNode, deltaENGMap[xdeltaFile]);
-                            patched = new BinaryFormat();
-                            xdelta = new FileStream(xdeltaFile, FileMode.Open);
-                            decoder = new Decoder(moflex.Stream, xdelta, patched.Stream);
+                            patchedRom = new BinaryFormat();
+                            xdeltaRom = new FileStream(xdeltaFile, FileMode.Open);
+                            decoderRom = new Decoder(moflex.Stream, xdeltaRom, patchedRom.Stream);
                             Console.WriteLine($"LOG: Parcheando {moflex.Name}");
-                            decoder.Run();
+                            decoderRom.Run();
 
-                            moflex.ChangeFormat(patched);
+                            moflex.ChangeFormat(patchedRom);
                         }
                         break;
                 }

@@ -82,6 +82,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Data\ExeFS\codeEUR.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ExeFS\codeUSA.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Data\RomFS\Moflex_JPN\chaos_end%283d%29_ES_JPN.xdelta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
