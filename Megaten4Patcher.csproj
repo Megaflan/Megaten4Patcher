@@ -82,6 +82,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Data\base.xdelta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Data\ExeFS\codeEUR.xdelta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

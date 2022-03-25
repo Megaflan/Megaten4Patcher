@@ -50,40 +50,32 @@ namespace Megaten4Patcher.Services
         {
             try
             {
-                Node cia = NodeFactory.FromFile(path, "root").TransformWith<BinaryCia2NodeContainer>();
+                Node cia = NodeFactory.FromFile(path, "root");
+
+                //Xdelta to Base CIA
+                var patchedRom = new BinaryFormat();
+                var xdeltaRom = new FileStream("./Data/base.xdelta", FileMode.Open);
+                var decoderRom = new Decoder(cia.Stream, xdeltaRom, patchedRom.Stream);
+                Console.WriteLine("LOG: Parcheando CIA...");
+                decoderRom.Run();
+                cia.ChangeFormat(patchedRom);
+                cia.Stream.Position = 0;
+
+                cia.TransformWith<BinaryCia2NodeContainer>();
 
                 var content = Navigator.SearchNode(cia, "/root/content/program");
                 content.TransformWith<Binary2Ncch>();
 
                 //Patch ExHeader for Decompressed code.bin
-                var exHeader = Navigator.SearchNode(cia, "/root/content/program/extended_header");
+                /*var exHeader = Navigator.SearchNode(cia, "/root/content/program/extended_header");
                 exHeader.Stream.Position = 0x0D;
                 byte flags = (byte)exHeader.Stream.ReadByte();
                 flags &= 0xFE; // bit0: 1 code.bin is compressed, 0 decompressed
                 exHeader.Stream.Position = 0x0D;
-                exHeader.Stream.WriteByte(flags);
-                
-                //Xdelta to ExeFS
-                var e = content.Children["system"];
-                e.TransformWith<BinaryExeFs2NodeContainer>();
-                var patchedExe = new BinaryFormat();
-                var xdeltaExe = new FileStream("./Data/ExeFS/codeEUR.xdelta", FileMode.Open);
-                var decoderExe = new Decoder(e.Children[".code"].Stream, xdeltaExe, patchedExe.Stream);
-                Console.WriteLine("LOG: Parcheando ExeFS...");
-                decoderExe.Run();
-                e.Children[".code"].ChangeFormat(patchedExe);
-                e.TransformWith<BinaryExeFs2NodeContainer>();
-
-                //Xdelta to RomFS
-                var c = content.Children["rom"];
-                var patchedRom = new BinaryFormat();
-                var xdeltaRom = new FileStream("./Data/RomFS/romfs.xdelta", FileMode.Open);
-                var decoderRom = new Decoder(c.Stream, xdeltaRom, patchedRom.Stream);
-                Console.WriteLine("LOG: Parcheando RomFS...");
-                decoderRom.Run();
-                c.ChangeFormat(patchedRom);
+                exHeader.Stream.WriteByte(flags);*/
 
                 //Xdelta to Videos
+                var c = content.Children["rom"];
                 c.Stream.Position = 0;
                 c.TransformWith<BinaryIvfc2NodeContainer>();
                 var moflexNode = Navigator.SearchNode(c, "moflex");
@@ -151,11 +143,23 @@ namespace Megaten4Patcher.Services
 
                 Console.WriteLine("LOG: Generando CIA...");
                 cia.TransformWith<NodeContainer2BinaryCia>().Stream.WriteTo($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp.cia");
+                Console.WriteLine("LOG: CIA generado con éxito");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
                 throw;
+            }
+        }
+
+        public static string GenerateHash(string path)
+        {
+            using (var md5 = MD5.Create())
+            {
+                var node = NodeFactory.FromFile(path, "root").Stream;
+                var hash = Convert.ToBase64String(md5.ComputeHash(node));
+                node.Dispose();
+                return hash;
             }
         }
 

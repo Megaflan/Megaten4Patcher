@@ -1,6 +1,8 @@
 ﻿@page "/gamepatch"
 @using System.IO
 @using Megaten4Patcher.Services
+@using System.Security.Cryptography
+@using Yarhl.FileSystem
 @inject IJSRuntime JS
 @layout PatcherLayout
 @inject Services.BlazorTimer Timer
@@ -10,12 +12,7 @@
     <div class="card-body">
         <h2 class="m-0 text-center">Parchea tu copia original de Nintendo 3DS</h2>
         <div class="row d-flex justify-content-center">
-            <p class="col-md-9">Este parche es compatible para copias originales de Shin Megami Tensei IV, tanto en versión física como en versión digital. Para saber cómo conseguir un dump legítimo de tu copia, lee los siguientes tutoriales:</p>
-            <ul class="text-left">
-                <li>
-                    <a href="https://not-d3fau4.tk/como-dumpear-nsp/" target="_blank">Tutorial para extraer el juego digital [CIA]</a>
-                </li>
-            </ul>
+            <p class="col-md-9">Este parche es compatible para copias originales de Shin Megami Tensei IV, tanto en versión física como en versión digital. Para saber cómo conseguir un dump legítimo de tu copia, lee el siguiente tutorial: <a href="https://3ds.hacks.guide/dumping-titles-and-game-cartridges.html" target="_blank">Tutorial para extraer el juego [CIA]</a></p>
         </div>
         <div class="form-check" style="margin-left: 350px;">
             <input class="form-check-input" type="checkbox" @bind="checkJPN" id="flexCheckDefault">
@@ -55,7 +52,6 @@
     bool checkJPN { get; set; }
     bool ListenerEnabled { get; set; }
     bool execution { get; set; }
-    static Main patchProcess;
 }
 
 @code {
@@ -100,15 +96,26 @@
         {            
             var path = Directory.GetParent(fileSelected).FullName;
             var targetPath = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp.cia";
-
-            Searcher.PatchGame(fileSelected, checkJPN);
-            patchingModal.Close();
-            var parameters = new ModalParameters();
-            parameters.Add(nameof(ModalExito.Path), targetPath);
-            Modal.Show<ModalExito>($"¡Parche generado con éxito!", parameters, new ModalOptions());
+            var hash = Searcher.GenerateHash(fileSelected);
+            if (hash == "oqwIBhSjD+uJnzBxOnRaqA==" | hash == "w3wGFSzCcYWOGojwlK+Mlg==")
+            {
+                Searcher.PatchGame(fileSelected, checkJPN);
+                patchingModal.Close();
+                var parameters = new ModalParameters();
+                parameters.Add(nameof(ModalExito.Path), targetPath);
+                Modal.Show<ModalExito>($"¡Parche generado con éxito!", parameters, new ModalOptions());
+            }
+            else
+            {
+                patchingModal.Close();
+                var param = new ModalParameters();
+                param.Add(nameof(ModalFallo.Error), "CIA no válido, dumpee un CIA descifrado desde GM9.");
+                this.patchingModal = Modal.Show<ModalFallo>($"Se ha producido un leyendo el CIA.", param, new ModalOptions());
+            }                                
         }
         catch (Exception e)
         {
+            patchingModal.Close();
             var parameters = new ModalParameters();
             parameters.Add(nameof(ModalFallo.Error), e.Message);
             this.patchingModal = Modal.Show<ModalFallo>($"Se ha producido un error extrayendo los archivos.", parameters, new ModalOptions());
@@ -133,7 +140,7 @@
                 };
                 var parameters = new ModalParameters();
                 parameters.Add(nameof(ModalNormal.Message), "Este proceso puede tardar varios minutos, por favor, espere...");
-                this.patchingModal = Modal.Show<ModalNormal>("Parcheando...", options);
+                this.patchingModal = Modal.Show<ModalNormal>("Parcheando...", parameters, options);
                 var t = Task.Run(async delegate
                 {
                     await Task.Delay(1000);

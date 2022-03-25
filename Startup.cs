@@ -76,9 +76,9 @@ namespace Megaten4Patcher
                 Maximizable = false,
                 Icon = "./icon.ico"
             });
-            window.SetTitle("Parcheador de Shin Megami Tensei IV");
             window.OnReadyToShow += () =>
             {
+                window.SetTitle("Parcheador de Shin Megami Tensei IV");
                 window.RemoveMenu();
             };
             window.OnClosed += () => {
