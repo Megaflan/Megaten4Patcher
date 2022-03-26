@@ -9,9 +9,13 @@
   "environment": "Production",
   "build": {
     "appId": "com.Megaten4Patcher.app",
-    "productName": "Megaten4Patcher",
+    "productName": "Parcheador de Shin Megami Tensei IV",
     "copyright": "Copyright © 2020",
     "buildVersion": "1.0.0",
+	"win": {
+		"icon": "bin/wwwroot/icon.png",
+		"target": "portable"
+	},
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"

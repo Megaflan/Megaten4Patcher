@@ -46,7 +46,7 @@ namespace Megaten4Patcher.Services
             cia.TransformWith<NodeContainer2BinaryCia>().Stream.WriteTo($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_DLC_esp.cia");
         }
 
-        public static void PatchGame(string path, bool jpnDub)
+        public static void PatchGame(string path, bool jpnDub, string regionHash)
         {
             try
             {
@@ -54,7 +54,18 @@ namespace Megaten4Patcher.Services
 
                 //Xdelta to Base CIA
                 var patchedRom = new BinaryFormat();
-                var xdeltaRom = new FileStream("./Data/base.xdelta", FileMode.Open);
+                FileStream xdeltaRom = null;
+                switch (regionHash)
+                {
+                    case "oqwIBhSjD+uJnzBxOnRaqA==":
+                        Console.WriteLine("LOG: Detectada región USA");
+                        xdeltaRom = new FileStream("./Data/baseUS.xdelta", FileMode.Open);
+                        break;
+                    case "w3wGFSzCcYWOGojwlK+Mlg==":
+                        Console.WriteLine("LOG: Detectada región EUR");
+                        xdeltaRom = new FileStream("./Data/baseEU.xdelta", FileMode.Open);
+                        break;
+                }
                 var decoderRom = new Decoder(cia.Stream, xdeltaRom, patchedRom.Stream);
                 Console.WriteLine("LOG: Parcheando CIA...");
                 decoderRom.Run();
