@@ -13,7 +13,8 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "nativeDebugging": true
     },
     "Megaten4Patcher": {
       "commandName": "Project",
@@ -21,14 +22,15 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": "true",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "dotnetRunMessages": "true"
     },
     "Electron.NET": {
       "commandName": "Executable",
       "executablePath": "electronize",
       "commandLineArgs": "start",
-      "workingDirectory": "."
+      "workingDirectory": ".",
+      "nativeDebugging": true
     }
   }
 }

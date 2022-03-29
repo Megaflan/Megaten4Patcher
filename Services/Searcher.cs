@@ -46,7 +46,7 @@ namespace Megaten4Patcher.Services
             cia.TransformWith<NodeContainer2BinaryCia>().Stream.WriteTo($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_DLC_esp.cia");
         }
 
-        public static void PatchGame(string path, bool jpnDub, string regionHash)
+        public static void PatchGame(string path, bool jpnDub, string regionHash, bool generateLayered)
         {
             try
             {
@@ -77,14 +77,6 @@ namespace Megaten4Patcher.Services
                 var content = Navigator.SearchNode(cia, "/root/content/program");
                 content.TransformWith<Binary2Ncch>();
 
-                //Patch ExHeader for Decompressed code.bin
-                /*var exHeader = Navigator.SearchNode(cia, "/root/content/program/extended_header");
-                exHeader.Stream.Position = 0x0D;
-                byte flags = (byte)exHeader.Stream.ReadByte();
-                flags &= 0xFE; // bit0: 1 code.bin is compressed, 0 decompressed
-                exHeader.Stream.Position = 0x0D;
-                exHeader.Stream.WriteByte(flags);*/
-
                 //Xdelta to Videos
                 var c = content.Children["rom"];
                 c.Stream.Position = 0;
@@ -97,6 +89,7 @@ namespace Megaten4Patcher.Services
                         {
                             {$"./Data/RomFS/Moflex_JPN{Path.DirectorySeparatorChar}chaos_end(3d)_ES_JPN.xdelta", "chaos_end(3d).moflex"},
                             {$"./Data/RomFS/Moflex_JPN{Path.DirectorySeparatorChar}cut_anim001(3d)_ES_JPN.xdelta", "cut_anim001(3d).moflex"},
+                            {$"./Data/RomFS/Moflex_JPN{Path.DirectorySeparatorChar}cut_anim002(3d)_ES.xdelta", "cut_anim002(3d).moflex"},
                             {$"./Data/RomFS/Moflex_JPN{Path.DirectorySeparatorChar}cut_anim003c(3d)_ES_JPN.xdelta", "cut_anim003c(3d).moflex"},
                             {$"./Data/RomFS/Moflex_JPN{Path.DirectorySeparatorChar}cut_anim004(3d)_ES_JPN.xdelta", "cut_anim004(3d).moflex"},
                             {$"./Data/RomFS/Moflex_JPN{Path.DirectorySeparatorChar}cut_anim006(3d)_ES_JPN.xdelta", "cut_anim006(3d).moflex"},
@@ -125,6 +118,7 @@ namespace Megaten4Patcher.Services
                         {
                             {$"./Data/RomFS/Moflex_USA{Path.DirectorySeparatorChar}chaos_end(3d)_ES_ENG.xdelta", "chaos_end(3d).moflex"},
                             {$"./Data/RomFS/Moflex_USA{Path.DirectorySeparatorChar}cut_anim001(3d)_ES_ENG.xdelta", "cut_anim001(3d).moflex"},
+                            {$"./Data/RomFS/Moflex_USA{Path.DirectorySeparatorChar}cut_anim002(3d)_ES.xdelta", "cut_anim002(3d).moflex"},
                             {$"./Data/RomFS/Moflex_USA{Path.DirectorySeparatorChar}cut_anim003c(3d)_ES_ENG.xdelta", "cut_anim003c(3d).moflex"},
                             {$"./Data/RomFS/Moflex_USA{Path.DirectorySeparatorChar}cut_anim004(3d)_ES_ENG.xdelta", "cut_anim004(3d).moflex"},
                             {$"./Data/RomFS/Moflex_USA{Path.DirectorySeparatorChar}cut_anim006(3d)_ES_ENG.xdelta", "cut_anim006(3d).moflex"},
@@ -149,12 +143,33 @@ namespace Megaten4Patcher.Services
                         }
                         break;
                 }
-                c.TransformWith<NodeContainer2BinaryIvfc>();
-                content.TransformWith<Ncch2Binary>();
-
-                Console.WriteLine("LOG: Generando CIA...");
-                cia.TransformWith<NodeContainer2BinaryCia>().Stream.WriteTo($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp.cia");
-                Console.WriteLine("LOG: CIA generado con éxito");
+                switch (generateLayered)
+                {
+                    case true:
+                        Console.WriteLine("LOG: Generando LayeredFS...");
+                        var pathLayered = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp{Path.DirectorySeparatorChar}0004000000141C00{Path.DirectorySeparatorChar}";
+                        foreach (var file in File.ReadAllLines("./Data/RomFS/layeredFS.txt"))
+                        {
+                            var n = Navigator.SearchNode(c, $"{c.Path}/{file}");
+                            n.Stream.WriteTo($"{pathLayered}romfs{Path.DirectorySeparatorChar}{n.Path.Replace($"root/content/program/rom/", "")}");
+                        }
+                        c.TransformWith<NodeContainer2BinaryIvfc>();
+                        content.TransformWith<Ncch2Binary>();
+                        content = Navigator.SearchNode(cia, "/root/content/program");
+                        content.TransformWith<Binary2Ncch>();
+                        var e = content.Children["system"];
+                        e.TransformWith<BinaryExeFs2NodeContainer>();
+                        e.Children[".code"].Stream.WriteTo($"{pathLayered}code.bin");
+                        Console.WriteLine("LOG: LayeredFS generado con éxito");
+                        break;
+                    case false:
+                        c.TransformWith<NodeContainer2BinaryIvfc>();
+                        content.TransformWith<Ncch2Binary>();
+                        Console.WriteLine("LOG: Generando CIA...");
+                        cia.TransformWith<NodeContainer2BinaryCia>().Stream.WriteTo($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp.cia");
+                        Console.WriteLine("LOG: CIA generado con éxito");
+                        break;
+                }                
             }
             catch (Exception e)
             {

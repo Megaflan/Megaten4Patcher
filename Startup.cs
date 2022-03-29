@@ -74,7 +74,7 @@ namespace Megaten4Patcher
                 MaxHeight = 600,
                 Resizable = false,
                 Maximizable = false,
-                AutoHideMenuBar = true,
+                //AutoHideMenuBar = true,
                 Title = "Parcheador de Shin Megami Tensei IV",
                 Icon = "icon.ico"
             });
