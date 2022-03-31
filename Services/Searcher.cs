@@ -46,36 +46,60 @@ namespace Megaten4Patcher.Services
             cia.TransformWith<NodeContainer2BinaryCia>().Stream.WriteTo($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_DLC_esp.cia");
         }
 
-        public static void PatchGame(string path, bool jpnDub, string regionHash, bool generateLayered)
+        public static void PatchGame(string path, bool jpnDub, bool generateLayered)
         {
             try
             {
+                var pathLayered = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp{Path.DirectorySeparatorChar}";
+
                 Node cia = NodeFactory.FromFile(path, "root");
-
-                //Xdelta to Base CIA
-                var patchedRom = new BinaryFormat();
-                FileStream xdeltaRom = null;
-                switch (regionHash)
-                {
-                    case "oqwIBhSjD+uJnzBxOnRaqA==":
-                        Console.WriteLine("LOG: Detectada región USA");
-                        xdeltaRom = new FileStream("./Data/baseUS.xdelta", FileMode.Open);
-                        break;
-                    case "w3wGFSzCcYWOGojwlK+Mlg==":
-                        Console.WriteLine("LOG: Detectada región EUR");
-                        xdeltaRom = new FileStream("./Data/baseEU.xdelta", FileMode.Open);
-                        break;
-                }
-                var decoderRom = new Decoder(cia.Stream, xdeltaRom, patchedRom.Stream);
-                Console.WriteLine("LOG: Parcheando CIA...");
-                decoderRom.Run();
-                cia.ChangeFormat(patchedRom);
-                cia.Stream.Position = 0;
-
                 cia.TransformWith<BinaryCia2NodeContainer>();
 
                 var content = Navigator.SearchNode(cia, "/root/content/program");
                 content.TransformWith<Binary2Ncch>();
+
+                //Xdelta to ExeFS
+                var e = content.Children["system"];
+                var patchedExe = new BinaryFormat();
+                var exeFSHash = Searcher.GenerateHash(e.Stream);
+                Console.WriteLine($"LOG: {exeFSHash}");
+                FileStream xdeltaExe = null;
+                if (exeFSHash == "G1ByQqppbAsXWZ30UW35aA==")
+                {
+                    xdeltaExe = new FileStream($"./Data/ExeFS/exeEur.xdelta", FileMode.Open);
+                    pathLayered += $"luma{Path.DirectorySeparatorChar}title{Path.DirectorySeparatorChar}0004000000141C00{Path.DirectorySeparatorChar}";
+                }
+                if (exeFSHash == "TRBP0mESeuEHlmQOPZfpCA==")
+                {
+                    xdeltaExe = new FileStream($"./Data/ExeFS/exeUsa.xdelta", FileMode.Open);
+                    pathLayered += $"luma{Path.DirectorySeparatorChar}title{Path.DirectorySeparatorChar}00040000000F5500{Path.DirectorySeparatorChar}";
+                }
+                if (exeFSHash == "owJDXnU4BkpIgwe6BNaV1A==")
+                {
+                    xdeltaExe = new FileStream($"./Data/ExeFS/exeUsaFis.xdelta", FileMode.Open);
+                    pathLayered += $"luma{Path.DirectorySeparatorChar}title{Path.DirectorySeparatorChar}00040000000F5500{Path.DirectorySeparatorChar}";
+                }
+                var decoderExe = new Decoder(e.Stream, xdeltaExe, patchedExe.Stream);
+                Console.WriteLine($"LOG: Parcheando ExeFS");
+                decoderExe.Run();
+
+                e.ChangeFormat(patchedExe);
+
+                //Xdelta to RomFS
+                var r = content.Children["rom"];
+                var patchedRom = new BinaryFormat();
+                var romFSHash = Searcher.GenerateHash(r.Stream);
+                Console.WriteLine($"LOG: {romFSHash}");
+                FileStream xdeltaRom = null;
+                if (romFSHash == "+xzhGTUL1vl4EaHj+q6LLg==")
+                    xdeltaRom = new FileStream($"./Data/RomFS/romfsEUR.xdelta", FileMode.Open);
+                if (romFSHash == "seJbo/esgPIozpQTJmJBfA==")
+                    xdeltaRom = new FileStream($"./Data/RomFS/romfsUSA.xdelta", FileMode.Open);
+                var decoderRom = new Decoder(r.Stream, xdeltaRom, patchedRom.Stream);
+                Console.WriteLine($"LOG: Parcheando RomFS");
+                decoderRom.Run();
+
+                r.ChangeFormat(patchedRom);
 
                 //Xdelta to Videos
                 var c = content.Children["rom"];
@@ -147,9 +171,9 @@ namespace Megaten4Patcher.Services
                 {
                     case true:
                         Console.WriteLine("LOG: Generando LayeredFS...");
-                        var pathLayered = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp{Path.DirectorySeparatorChar}0004000000141C00{Path.DirectorySeparatorChar}";
                         foreach (var file in File.ReadAllLines("./Data/RomFS/layeredFS.txt"))
                         {
+                            Console.WriteLine(file);
                             var n = Navigator.SearchNode(c, $"{c.Path}/{file}");
                             n.Stream.WriteTo($"{pathLayered}romfs{Path.DirectorySeparatorChar}{n.Path.Replace($"root/content/program/rom/", "")}");
                         }
@@ -157,7 +181,7 @@ namespace Megaten4Patcher.Services
                         content.TransformWith<Ncch2Binary>();
                         content = Navigator.SearchNode(cia, "/root/content/program");
                         content.TransformWith<Binary2Ncch>();
-                        var e = content.Children["system"];
+                        e = content.Children["system"];
                         e.TransformWith<BinaryExeFs2NodeContainer>();
                         e.Children[".code"].Stream.WriteTo($"{pathLayered}code.bin");
                         Console.WriteLine("LOG: LayeredFS generado con éxito");
@@ -169,7 +193,7 @@ namespace Megaten4Patcher.Services
                         cia.TransformWith<NodeContainer2BinaryCia>().Stream.WriteTo($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp.cia");
                         Console.WriteLine("LOG: CIA generado con éxito");
                         break;
-                }                
+                }
             }
             catch (Exception e)
             {
@@ -185,6 +209,15 @@ namespace Megaten4Patcher.Services
                 var node = NodeFactory.FromFile(path, "root").Stream;
                 var hash = Convert.ToBase64String(md5.ComputeHash(node));
                 node.Dispose();
+                return hash;
+            }
+        }
+
+        public static string GenerateHash(Stream stream)
+        {
+            using (var md5 = MD5.Create())
+            {
+                var hash = Convert.ToBase64String(md5.ComputeHash(stream));
                 return hash;
             }
         }
