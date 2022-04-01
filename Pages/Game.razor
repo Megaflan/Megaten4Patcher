@@ -12,7 +12,8 @@
     <div class="card-body">
         <h2 class="m-0 text-center">Parchea tu copia original de Nintendo 3DS</h2>
         <div class="row d-flex justify-content-center">
-            <p class="col-md-9">Este parche es compatible con copias originales de Shin Megami Tensei IV, tanto en versión física como en versión digital. Para saber cómo conseguir un dump legítimo de tu copia, lee el siguiente tutorial: <a href="https://3ds.hacks.guide/es_ES/dumping-titles-and-game-cartridges.html#volcar-un-cartucho-de-juego-de-3ds-a-un-archivo-cia" target="_blank">Tutorial para extraer el juego [CIA]</a></p>
+            <p class="col-md-9">Este parche es compatible con copias originales de Shin Megami Tensei IV, tanto en versión física como en versión digital.
+                Para saber cómo conseguir un dump legítimo de tu copia, lee el siguiente tutorial: <a href="https://3ds.hacks.guide/es_ES/dumping-titles-and-game-cartridges.html#volcar-un-cartucho-de-juego-de-3ds-a-un-archivo-cia" target="_blank">Tutorial para extraer el juego desde un cartucho [CIA]</a> o, en su defecto, lee el siguiente tutorial: <a href="https://3ds.hacks.guide/es_ES/dumping-titles-and-game-cartridges.html#volcar-un-t%C3%ADtulo-instalado" target="_blank">Tutorial para extraer el juego desde una instalación digital [CIA]</a></p>
         </div>
         <div>
             <ul style="display: flex;align-items: center;justify-content: space-evenly;">
@@ -26,6 +27,12 @@
                     <input class="form-check-input" type="checkbox" @bind="checkLayered" id="flexCheckLayered">
                     <label class="form-check-label" for="flexCheckLayered">
                         Generar LayeredFS en vez de CIA
+                    </label>
+                </li>
+                <li>
+                    <input class="form-check-input" type="checkbox" @bind="checkLog" id="flexCheckLog">
+                    <label class="form-check-label" for="flexCheckLog">
+                        Generar Log
                     </label>
                 </li>
             </ul>            
@@ -61,6 +68,7 @@
     string fileSelected { get; set; }
     bool checkJPN { get; set; }
     bool checkLayered { get; set; }
+    bool checkLog { get; set; }
     bool ListenerEnabled { get; set; }
     bool execution { get; set; }
 }
@@ -107,7 +115,7 @@
         {            
             var path = Directory.GetParent(fileSelected).FullName;
             var targetPath = $"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}ShinMegamiTenseiIV_esp";                     
-            Searcher.PatchGame(fileSelected, checkJPN, checkLayered);
+            Searcher.PatchGame(fileSelected, checkJPN, checkLayered, checkLog);
             patchingModal.Close();
             var parameters = new ModalParameters();
             if (checkLayered)
